@@ -113,12 +113,19 @@ if __name__ == "__main__":
     setIsRunning(true);
     setOutput("Initializing Neural Execution Environment..."); 
 
-    try {
-      const response = await fetch("http://localhost:8000/execute", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: code, language: "python" }),
-      });
+// CodeEditor.tsx के अंदर 
+
+// Backend URL ko dynamic banayein
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+
+// 1. handleRun ke andar:
+try {
+  const response = await fetch(`${BACKEND_URL}/execute`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code: code, language: "python" }),
+  });
+  // ... baaki code same rahega
 
       const data = await response.json();
 
@@ -159,16 +166,18 @@ if __name__ == "__main__":
 
     setAiMessages(prev => [...prev, { role: "assistant", content: "Analyzing neural pathways..." }]);
 
-    try {
-      const response = await fetch("http://localhost:8000/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-            message: userMsg, 
-            code: code, 
-            language: "python" 
-        }),
-      });
+// 2. handleAiSend ke andar:
+try {
+  const response = await fetch(`${BACKEND_URL}/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ 
+        message: userMsg, 
+        code: code, 
+        language: "python" 
+    }),
+  });
+  // ... baaki code same rahega
 
       const data = await response.json();
 

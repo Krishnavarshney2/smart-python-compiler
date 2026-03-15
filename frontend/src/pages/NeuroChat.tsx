@@ -69,17 +69,21 @@ const NeuroChat = () => {
     setInputValue("");
     setIsLoading(true);
 
-    try {
-      const response = await fetch("http://localhost:8000/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-            message: userMessage.content, 
-            code: "", 
-            language: "python" 
-        }),
-      });
+// NeuroChat.tsx ke andar handleSend function mein:
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+
+try {
+  const response = await fetch(`${BACKEND_URL}/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ 
+        message: userMessage.content, 
+        code: "", 
+        language: "python" 
+    }),
+  });
+  // ... baaki code same rahega
       const data = await response.json();
 
       const aiResponse: Message = {
